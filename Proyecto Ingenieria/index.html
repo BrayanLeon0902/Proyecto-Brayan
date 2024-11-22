@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplicación Simulada</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .form-section {
+            display: none;
+        }
+        .form-section.active {
+            display: block;
+        }
+        button {
+            margin: 10px 5px;
+        }
+        .output, .scan-result {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+<body>
+    <h1>Aplicación Simulada</h1>
+
+    <!-- Paso 1: Datos personales -->
+    <div id="step1" class="form-section active">
+        <h2>Paso 1: Ingresa tu información</h2>
+        <div>
+            <label for="name">Nombre:</label>
+            <input type="text" id="name" placeholder="Ingresa tu nombre">
+        </div>
+        <div>
+            <label for="email">Correo:</label>
+            <input type="email" id="email" placeholder="Ingresa tu correo">
+        </div>
+        <button onclick="nextStep(2)">Siguiente</button>
+    </div>
+
+    <!-- Paso 2: Escaneo de la empresa -->
+    <div id="step2" class="form-section">
+        <h2>Paso 2: Información de la empresa</h2>
+        <div>
+            <label for="companyName">Nombre de la empresa:</label>
+            <input type="text" id="companyName" placeholder="Ingresa el nombre de la empresa">
+        </div>
+        <div>
+            <label for="employees">Número de empleados:</label>
+            <input type="number" id="employees" placeholder="Cantidad de empleados">
+        </div>
+        <div>
+            <button onclick="scanCompany()">Escanear Empresa</button>
+        </div>
+        <div id="scanResult" class="scan-result" style="display: none;">
+            <h3>Resultado del escaneo:</h3>
+            <p id="resultContent">Escaneando...</p>
+        </div>
+        <button onclick="prevStep(1)">Atrás</button>
+        <button onclick="nextStep(3)">Siguiente</button>
+    </div>
+
+    <!-- Paso 3: Confirmación -->
+    <div id="step3" class="form-section">
+        <h2>Paso 3: Confirmación</h2>
+        <div id="summary" class="output"></div>
+        <button onclick="prevStep(2)">Atrás</button>
+        <button onclick="resetApp()">Reiniciar</button>
+    </div>
+
+    <script>
+        // Navegación entre pasos
+        function nextStep(step) {
+            document.querySelectorAll('.form-section').forEach(section => section.classList.remove('active'));
+            document.getElementById(`step${step}`).classList.add('active');
+
+            if (step === 3) {
+                showSummary();
+            }
+        }
+
+        function prevStep(step) {
+            document.querySelectorAll('.form-section').forEach(section => section.classList.remove('active'));
+            document.getElementById(`step${step}`).classList.add('active');
+        }
+
+        // Escanear la empresa
+        function scanCompany() {
+            const companyName = document.getElementById('companyName').value || 'Empresa no especificada';
+            const employees = document.getElementById('employees').value || 'No especificado';
+
+            const scanResultDiv = document.getElementById('scanResult');
+            const resultContent = document.getElementById('resultContent');
+
+            let analysis = '';
+            if (employees !== 'No especificado') {
+                const numEmployees = parseInt(employees, 10);
+                if (numEmployees < 50) {
+                    analysis = 'La empresa parece ser pequeña, lo que quiere decir que no es tan propensa a sufrir ataques ciberneticos';
+                } else if (numEmployees <= 250) {
+                    analysis = 'La empresa es mediana y puede tener ataques ciberneticos.';
+                } else {
+                    analysis = 'La empresa es grande, perfecta para estrategias corporativas robustas y metodos de proteccion contra posibles ataques ciberneticos.';
+                }
+            } else {
+                analysis = 'No se proporcionó suficiente información para un análisis detallado.';
+            }
+
+            resultContent.innerHTML = `
+                <strong>Nombre:</strong> ${companyName}<br>
+                <strong>Empleados:</strong> ${employees}<br>
+                <strong>Análisis:</strong> ${analysis}
+            `;
+            scanResultDiv.style.display = 'block';
+        }
+
+        // Mostrar el resumen en el paso 3
+        function showSummary() {
+            const name = document.getElementById('name').value || 'No proporcionado';
+            const email = document.getElementById('email').value || 'No proporcionado';
+            const companyName = document.getElementById('companyName').value || 'No proporcionado';
+            const employees = document.getElementById('employees').value || 'No especificado';
+
+            document.getElementById('summary').innerHTML = `
+                <p><strong>Nombre:</strong> ${name}</p>
+                <p><strong>Correo:</strong> ${email}</p>
+                <p><strong>Nombre de la empresa:</strong> ${companyName}</p>
+                <p><strong>Empleados:</strong> ${employees}</p>
+            `;
+        }
+
+        // Reiniciar la aplicación
+        function resetApp() {
+            document.querySelectorAll('input, select').forEach(input => {
+                if (input.type === 'checkbox') {
+                    input.checked = false;
+                } else {
+                    input.value = '';
+                }
+            });
+            document.getElementById('scanResult').style.display = 'none';
+            nextStep(1);
+        }
+    </script>
+</body>
+</html>
