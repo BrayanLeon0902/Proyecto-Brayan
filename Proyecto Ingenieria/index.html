@@ -29,7 +29,7 @@
 <body>
     <h1>Aplicación Simulada</h1>
 
-    <!-- Paso 1: Datos personales -->
+    
     <div id="step1" class="form-section active">
         <h2>Paso 1: Ingresa tu información</h2>
         <div>
@@ -43,7 +43,7 @@
         <button onclick="nextStep(2)">Siguiente</button>
     </div>
 
-    <!-- Paso 2: Escaneo de la empresa -->
+    
     <div id="step2" class="form-section">
         <h2>Paso 2: Información de la empresa</h2>
         <div>
@@ -65,7 +65,7 @@
         <button onclick="nextStep(3)">Siguiente</button>
     </div>
 
-    <!-- Paso 3: Confirmación -->
+    
     <div id="step3" class="form-section">
         <h2>Paso 3: Confirmación</h2>
         <div id="summary" class="output"></div>
@@ -74,7 +74,7 @@
     </div>
 
     <script>
-        // Navegación entre pasos
+       
         function nextStep(step) {
             document.querySelectorAll('.form-section').forEach(section => section.classList.remove('active'));
             document.getElementById(`step${step}`).classList.add('active');
@@ -89,7 +89,7 @@
             document.getElementById(`step${step}`).classList.add('active');
         }
 
-        // Escanear la empresa
+        
         function scanCompany() {
             const companyName = document.getElementById('companyName').value || 'Empresa no especificada';
             const employees = document.getElementById('employees').value || 'No especificado';
@@ -119,7 +119,7 @@
             scanResultDiv.style.display = 'block';
         }
 
-        // Mostrar el resumen en el paso 3
+       
         function showSummary() {
             const name = document.getElementById('name').value || 'No proporcionado';
             const email = document.getElementById('email').value || 'No proporcionado';
@@ -134,7 +134,7 @@
             `;
         }
 
-        // Reiniciar la aplicación
+      
         function resetApp() {
             document.querySelectorAll('input, select').forEach(input => {
                 if (input.type === 'checkbox') {
